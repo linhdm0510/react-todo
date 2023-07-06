@@ -1,6 +1,6 @@
-import { Button, Space } from 'antd';
+import { Button, Popconfirm, Space } from 'antd';
 
-export const getColumnsProduct = ({ handleEdit }) => [
+export const getColumnsProduct = ({ handleEdit, handleDelete }) => [
 	{
 		title: 'Title',
 		dataIndex: 'title',
@@ -28,6 +28,15 @@ export const getColumnsProduct = ({ handleEdit }) => [
 		render: (_, record) => (
 			<Space size="small">
 				<Button onClick={() => handleEdit(record)}>Edit</Button>
+				<Popconfirm
+					title="Delete the product"
+					description="Are you sure to delete this product?"
+					okText="Yes"
+					onConfirm={() => handleDelete(record.id)}
+					cancelText="No"
+				>
+					<Button danger>Delete</Button>
+				</Popconfirm>
 			</Space>
 		),
 	},

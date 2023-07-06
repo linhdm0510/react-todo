@@ -1,7 +1,3 @@
-.page-header {
-  
-}
-
 .ant-layout .ant-layout-header {
   text-align: 'center';
   height: 64;
@@ -9,4 +5,8 @@
   background-color: #7dbcea;
   padding-inline: 50;
   line-height: '64px';
+}
+
+.ant-layout-content{
+  height: calc(100vh - 64px - 67px);
 }
