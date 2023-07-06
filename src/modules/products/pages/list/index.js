@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { productService } from '../../products.service';
-import { COLUMS_PRODUCT } from '../../product.constant';
+import { getColumnsProduct } from '../../product.constant';
 import { Table } from 'antd';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
-	const [columns, setColums] = useState(COLUMS_PRODUCT);
+	const handleEdit = (product) => {
+		console.log('product: ', product);
+	};
+	const [columns, setColumns] = useState(() => getColumnsProduct({ handleEdit }));
 	const [total, setTotal] = useState();
 	const [pagination, setPagination] = useState({
 		pageSize: 10,

@@ -1,6 +1,6 @@
 import { Button, Space } from 'antd';
 
-export const COLUMS_PRODUCT = [
+export const getColumnsProduct = ({ handleEdit }) => [
 	{
 		title: 'Title',
 		dataIndex: 'title',
@@ -27,7 +27,7 @@ export const COLUMS_PRODUCT = [
 		key: 'action',
 		render: (_, record) => (
 			<Space size="small">
-				<Button>Edit</Button>
+				<Button onClick={() => handleEdit(record)}>Edit</Button>
 			</Space>
 		),
 	},
