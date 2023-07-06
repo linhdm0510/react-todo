@@ -1,13 +1,25 @@
-import { createBrowserRouter } from 'react-router-dom';
-import App from './App';
-import { todoRouter } from './modules/todos/router';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { productRouter } from './modules/products/products.router';
+import Layout from './components/Layout';
+import NotFoundPage from './components/NotFoundPage';
+
+const appRouter = [
+  {
+    path: "/",
+    element:  <Navigate to="/products" />,
+  },
+  ...productRouter
+];
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element:  <App />,
+    element: <Layout />,
+    children: appRouter
   },
-  ...todoRouter,
+  {
+    path: '*',
+    element: <NotFoundPage />
+  }
 ]);
 
 export default router;
