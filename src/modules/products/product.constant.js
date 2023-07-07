@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Space } from 'antd';
 
-export const getColumnsProduct = ({ handleEdit, handleDelete }) => [
+export const getColumnsProduct = ({ handleEdit, handleDelete, onClickDelete }) => [
 	{
 		title: 'Title',
 		dataIndex: 'title',
@@ -35,7 +35,12 @@ export const getColumnsProduct = ({ handleEdit, handleDelete }) => [
 					onConfirm={() => handleDelete(record)}
 					cancelText="No"
 				>
-					<Button danger>Delete</Button>
+					<Button
+						danger
+						onClick={() => onClickDelete()}
+					>
+						Delete
+					</Button>
 				</Popconfirm>
 			</Space>
 		),

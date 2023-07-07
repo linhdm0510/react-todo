@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { productService } from '../../products.service';
 import { getColumnsProduct } from '../../product.constant';
 import { Button, Table, message } from 'antd';
@@ -9,6 +9,9 @@ export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
 	const [isShow, setIsShow] = useState(false);
 	const [isShowDetail, setIsShowDetail] = useState(false);
+	const [productId, setProductId] = useState(null);
+	const [isDelete, setIsDelete] = useState(false);
+
 	const handleEdit = (product) => {
 		setProductId(product.id);
 		setIsShow(true);
@@ -20,12 +23,20 @@ export default function ProductListPage() {
 		if (res.success) {
 			message.success('Delete product successfully!');
 			getListProduct();
+			setIsDelete(false);
 		} else message.error('Delete failed.');
 	};
 
-	const [columns, setColumns] = useState(() => getColumnsProduct({ handleEdit, handleDelete }));
+	const onClickDelete = () => {
+		setIsDelete(true);
+	};
+
+	useEffect(() => {
+		if (isShow || isDelete) setIsShowDetail(!isShow && !isDelete);
+	}, [isShow, isDelete]);
+
+	const [columns, setColumns] = useState(() => getColumnsProduct({ handleEdit, handleDelete, onClickDelete }));
 	const [total, setTotal] = useState();
-	const [productId, setProductId] = useState(null);
 	const [pagination, setPagination] = useState({
 		pageSize: 10,
 		currentPage: 1,
