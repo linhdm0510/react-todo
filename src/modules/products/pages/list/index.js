@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { productService } from '../../products.service';
 import { getColumnsProduct } from '../../product.constant';
 import { Button, Table, message } from 'antd';
-import { ModalProduct } from '../../components/form/ModalProduct';
 import FormModal from '../../components/form/FormModal';
+import { DetailProduct } from '../../components/form/Drawer';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
-
+	const [isShow, setIsShow] = useState(false);
+	const [isShowDetail, setIsShowDetail] = useState(false);
 	const handleEdit = (product) => {
 		console.log('product: ', product);
 		setProductId(product.id);
@@ -30,7 +31,7 @@ export default function ProductListPage() {
 		pageSize: 10,
 		currentPage: 1,
 	});
-	const [isShow, setIsShow] = useState(false);
+	const [dataDetail, setDataDetail] = useState({});
 
 	const getListProduct = async () => {
 		const response = await productService.getList({
@@ -72,8 +73,18 @@ export default function ProductListPage() {
 		setProductId(null);
 	};
 
+	const handleClickRow = (data) => {
+		setDataDetail(data);
+		setIsShowDetail(true);
+	};
+
+	const closeDrawer = () => {
+		setDataDetail({});
+		setIsShowDetail(false);
+	};
+
 	return (
-		<>
+		<div>
 			<div className="btn-primary">
 				<Button
 					size="middle"
@@ -89,6 +100,13 @@ export default function ProductListPage() {
 				pagination={{ pageSize: pagination.pageSize, total: total, showSizeChanger: true }}
 				scroll={{ y: 700 }}
 				onChange={handleTableChange}
+				onRow={(record, rowIndex) => {
+					return {
+						onClick: (event) => {
+							handleClickRow(record);
+						},
+					};
+				}}
 			/>
 			<FormModal
 				productId={productId}
@@ -96,6 +114,13 @@ export default function ProductListPage() {
 				handleCancel={handleCancel}
 				handleCreate={handleCreate}
 			></FormModal>
-		</>
+			{isShowDetail && (
+				<DetailProduct
+					isShow={isShowDetail}
+					onClose={() => closeDrawer()}
+					data={dataDetail}
+				></DetailProduct>
+			)}
+		</div>
 	);
 }

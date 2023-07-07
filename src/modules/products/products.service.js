@@ -22,4 +22,8 @@ export const productService = {
 	getProductCategories() {
 		return axios.get(`${PRODUCT_URL}/categories`);
 	},
+
+	getDetailProduct(id) {
+		return axios.get(`${PRODUCT_URL}/${id}`);
+	},
 };

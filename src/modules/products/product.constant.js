@@ -41,3 +41,9 @@ export const getColumnsProduct = ({ handleEdit, handleDelete }) => [
 		),
 	},
 ];
+
+export const SPAN_DETAIL = {
+	title: 10,
+	content: 12,
+	space: 2,
+};
