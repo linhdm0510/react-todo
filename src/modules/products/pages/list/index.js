@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { productService } from '../../products.service';
 import { getColumnsProduct } from '../../product.constant';
 import { Button, Table, message } from 'antd';
-import { ModalProduct } from '../../../../components/ModalProduct';
-import { FormProduct } from '../FormProduct';
+import { ModalProduct } from '../../components/form/ModalProduct';
+import { FormProduct } from '../../components/form/FormProduct';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
