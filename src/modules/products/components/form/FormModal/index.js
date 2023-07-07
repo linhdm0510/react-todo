@@ -28,8 +28,8 @@ export default function FormModal(props) {
 	useEffect(() => {
 		const getCategoryOption = async () => {
 			const response = await productService.getProductCategories();
-			console.log('response', response);
-			setCategoryOptions([]);
+			const categories = (response?.data || []).map((value) => ({ value, label: value }));
+			setCategoryOptions(categories);
 		};
 		getCategoryOption();
 	}, [props.isShow]);

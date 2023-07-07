@@ -53,7 +53,7 @@ export default function ProductListPage() {
 				};
 			});
 			setProductsList(mappingData || []);
-			setTotal(response?.total || 0);
+			setTotal(response?.data?.total || 0);
 		}
 	};
 	useEffect(() => {
