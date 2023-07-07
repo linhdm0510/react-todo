@@ -18,4 +18,8 @@ export const productService = {
 	updateProduct(payload) {
 		return axios.put(`${PRODUCT_URL}/${payload.params}`, payload.body);
 	},
+
+	getProductCategories() {
+		return axios.get(`${PRODUCT_URL}/categories`);
+	},
 };

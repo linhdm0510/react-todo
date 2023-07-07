@@ -3,20 +3,20 @@ import { productService } from '../../products.service';
 import { getColumnsProduct } from '../../product.constant';
 import { Button, Table, message } from 'antd';
 import { ModalProduct } from '../../components/form/ModalProduct';
-import { FormProduct } from '../../components/form/FormProduct';
+import FormModal from '../../components/form/FormModal';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
 
 	const handleEdit = (product) => {
 		console.log('product: ', product);
-		setIsEdit(true);
+		setProductId(product.id);
 		setIsShow(true);
 	};
 
-	const handleDelete = async (productID) => {
-		setProductID(productID);
-		const res = await productService.deleteProduct(productID);
+	const handleDelete = async (product) => {
+		setProductId(product.id);
+		const res = await productService.deleteProduct(product.id);
 		if (res.success) {
 			message.success('Delete product successfully !');
 			getListProduct();
@@ -25,12 +25,11 @@ export default function ProductListPage() {
 
 	const [columns, setColumns] = useState(() => getColumnsProduct({ handleEdit, handleDelete }));
 	const [total, setTotal] = useState();
-	const [productID, setProductID] = useState();
+	const [productId, setProductId] = useState(null);
 	const [pagination, setPagination] = useState({
 		pageSize: 10,
 		currentPage: 1,
 	});
-	const [isEdit, setIsEdit] = useState(false);
 	const [isShow, setIsShow] = useState(false);
 
 	const getListProduct = async () => {
@@ -39,7 +38,7 @@ export default function ProductListPage() {
 			skip: pagination.pageSize * (pagination.currentPage - 1),
 		});
 		if (response?.success) {
-			const mappingData = (response?.products || []).map((el) => {
+			const mappingData = (response?.data?.products || []).map((el) => {
 				return {
 					key: el?.id,
 					id: el?.id,
@@ -66,12 +65,11 @@ export default function ProductListPage() {
 
 	const handleCreate = () => {
 		setIsShow(true);
-		setIsEdit(false);
 	};
 
 	const handleCancel = () => {
 		setIsShow(false);
-		setIsEdit(false);
+		setProductId(null);
 	};
 
 	return (
@@ -92,13 +90,12 @@ export default function ProductListPage() {
 				scroll={{ y: 700 }}
 				onChange={handleTableChange}
 			/>
-			<ModalProduct
-				isEdit={isEdit}
+			<FormModal
+				productId={productId}
 				isShow={isShow}
-				handleCancel={() => handleCancel()}
-			>
-				<FormProduct></FormProduct>
-			</ModalProduct>
+				handleCancel={handleCancel}
+				handleCreate={handleCreate}
+			></FormModal>
 		</>
 	);
 }

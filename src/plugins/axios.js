@@ -22,10 +22,14 @@ axiosInstance.interceptors.response.use(
 	function (response) {
 		// Any status code that lie within the range of 2xx cause this function to trigger
 		// Do something with response data
+		const responseData = {};
 		if (response.status === 200) {
-			response.data.success = true;
+			responseData.success = true;
 		}
-		return response.data;
+		return {
+			...responseData,
+			data: response.data,
+		};
 	},
 	function (error) {
 		// Any status codes that falls outside the range of 2xx cause this function to trigger

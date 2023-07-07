@@ -32,7 +32,7 @@ export const getColumnsProduct = ({ handleEdit, handleDelete }) => [
 					title="Delete the product"
 					description="Are you sure to delete this product?"
 					okText="Yes"
-					onConfirm={() => handleDelete(record.id)}
+					onConfirm={() => handleDelete(record)}
 					cancelText="No"
 				>
 					<Button danger>Delete</Button>
