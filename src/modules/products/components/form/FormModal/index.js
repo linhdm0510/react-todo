@@ -1,4 +1,4 @@
-import { Modal, Row } from 'antd';
+import { Modal, message } from 'antd';
 import './styles.scss';
 import { useForm } from 'react-hook-form';
 import FormInputText from '../../../../../components/Form/InputText';
@@ -21,26 +21,51 @@ export default function FormModal(props) {
 		resolver: yupResolver(formSchema),
 	});
 	const [categoryOptions, setCategoryOptions] = useState([]);
-	// getProductCategories
 
 	const title = props.productId ? 'Edit Product' : 'Create new Product';
 
 	useEffect(() => {
+		if (!props.isShow) return;
 		const getCategoryOption = async () => {
 			const response = await productService.getProductCategories();
 			const categories = (response?.data || []).map((value) => ({ value, label: value }));
 			setCategoryOptions(categories);
 		};
-		getCategoryOption();
-	}, [props.isShow]);
 
-	const submit = (data) => {
-		console.log('data', data);
-		console.log('form', form);
+		const getProductDetail = async () => {
+			const response = await productService.getDetailProduct(props.productId);
+			if (response.success) {
+				const productDetail = response.data || {};
+				form.setValue('title', productDetail.title || '');
+				form.setValue('category', productDetail.category || '');
+			} else {
+				message.error('Product does not exist.');
+				props.handleCancel();
+			}
+		};
+		getCategoryOption();
+		if (props.productId) {
+			getProductDetail();
+		}
+	}, [props.isShow, props.productId]);
+
+	const submit = async (data) => {
+		const response = props.productId
+			? await productService.updateProduct(props.productId, data)
+			: await productService.addProduct(data);
+		if (response?.success) {
+			const successMessage = props.productId ? 'Update product successfully' : 'Add product successfully';
+			message.success(successMessage);
+			handleCancel();
+			props.getListProduct();
+		} else {
+			message.error('Add product failed.');
+		}
 	};
 
 	const handleCancel = () => {
 		if (typeof props.handleCancel === 'function') {
+			form.reset();
 			props.handleCancel();
 		}
 	};

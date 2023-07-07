@@ -10,7 +10,6 @@ export default function ProductListPage() {
 	const [isShow, setIsShow] = useState(false);
 	const [isShowDetail, setIsShowDetail] = useState(false);
 	const handleEdit = (product) => {
-		console.log('product: ', product);
 		setProductId(product.id);
 		setIsShow(true);
 	};
@@ -19,7 +18,7 @@ export default function ProductListPage() {
 		setProductId(product.id);
 		const res = await productService.deleteProduct(product.id);
 		if (res.success) {
-			message.success('Delete product successfully !');
+			message.success('Delete product successfully!');
 			getListProduct();
 		} else message.error('Delete failed.');
 	};
@@ -108,12 +107,15 @@ export default function ProductListPage() {
 					};
 				}}
 			/>
-			<FormModal
-				productId={productId}
-				isShow={isShow}
-				handleCancel={handleCancel}
-				handleCreate={handleCreate}
-			></FormModal>
+			{isShow && (
+				<FormModal
+					productId={productId}
+					isShow={isShow}
+					handleCancel={handleCancel}
+					handleCreate={handleCreate}
+					getListProduct={getListProduct}
+				/>
+			)}
 			{isShowDetail && (
 				<DetailProduct
 					isShow={isShowDetail}

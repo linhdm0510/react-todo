@@ -15,8 +15,8 @@ export const productService = {
 		return axios.post(`${PRODUCT_URL}/add`, payload);
 	},
 
-	updateProduct(payload) {
-		return axios.put(`${PRODUCT_URL}/${payload.params}`, payload.body);
+	updateProduct(id, data) {
+		return axios.put(`${PRODUCT_URL}/${id}`, data);
 	},
 
 	getProductCategories() {
