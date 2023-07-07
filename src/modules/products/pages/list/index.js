@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { productService } from '../../products.service';
 import { getColumnsProduct } from '../../product.constant';
-import { Table, message } from 'antd';
+import { Button, Table, message } from 'antd';
+import { ModalProduct } from '../../../../components/ModalProduct';
+import { FormProduct } from '../FormProduct';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
 
 	const handleEdit = (product) => {
 		console.log('product: ', product);
+		setIsEdit(true);
+		setIsShow(true);
 	};
 
 	const handleDelete = async (productID) => {
@@ -26,6 +30,8 @@ export default function ProductListPage() {
 		pageSize: 10,
 		currentPage: 1,
 	});
+	const [isEdit, setIsEdit] = useState(false);
+	const [isShow, setIsShow] = useState(false);
 
 	const getListProduct = async () => {
 		const response = await productService.getList({
@@ -58,14 +64,41 @@ export default function ProductListPage() {
 		setPagination({ pageSize: pagination.pageSize, currentPage: pagination.current });
 	};
 
+	const handleCreate = () => {
+		setIsShow(true);
+		setIsEdit(false);
+	};
+
+	const handleCancel = () => {
+		setIsShow(false);
+		setIsEdit(false);
+	};
+
 	return (
 		<>
+			<div className="btn-primary">
+				<Button
+					size="middle"
+					type="primary"
+					onClick={handleCreate}
+				>
+					Create new Product
+				</Button>
+			</div>
 			<Table
 				dataSource={productsList}
 				columns={columns}
 				pagination={{ pageSize: pagination.pageSize, total: total, showSizeChanger: true }}
+				scroll={{ y: 700 }}
 				onChange={handleTableChange}
 			/>
+			<ModalProduct
+				isEdit={isEdit}
+				isShow={isShow}
+				handleCancel={() => handleCancel()}
+			>
+				<FormProduct></FormProduct>
+			</ModalProduct>
 		</>
 	);
 }

@@ -23,7 +23,6 @@ export default function Layouts() {
 				<Content>
 					<Outlet />
 				</Content>
-				<Footer>Footer</Footer>
 			</Layout>
 		</Space>
 	);

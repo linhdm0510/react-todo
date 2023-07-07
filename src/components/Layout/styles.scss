@@ -5,8 +5,26 @@
   background-color: #7dbcea;
   padding-inline: 50;
   line-height: '64px';
+
 }
 
 .ant-layout-content{
-  height: calc(100vh - 64px - 67px);
+  margin: 12px 12px;
+  height: calc(100vh - 64px - 24px);
+  .ant-table {
+    .ant-table-container {
+      .ant-table-content {
+        text-align: end;
+      }
+    }
+  }
+  .ant-table-wrapper {
+    .ant-table-pagination.ant-pagination{
+      margin-right: 16px;
+    }
+  }
+  .btn-primary {
+    text-align: end;
+    margin-bottom: 12px;
+  }
 }
