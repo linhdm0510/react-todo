@@ -4,10 +4,13 @@ import { getColumnsProduct } from '../../product.constant';
 import { Button, Table, message } from 'antd';
 import { ModalProduct } from '../../components/form/ModalProduct';
 import { FormProduct } from '../../components/form/FormProduct';
+import { DetailProduct } from '../../components/form/Drawer';
 
 export default function ProductListPage() {
 	const [productsList, setProductsList] = useState([]);
-
+	const [isEdit, setIsEdit] = useState(false);
+	const [isShow, setIsShow] = useState(false);
+	const [isShowDetail, setIsShowDetail] = useState(false);
 	const handleEdit = (product) => {
 		console.log('product: ', product);
 		setIsEdit(true);
@@ -30,8 +33,7 @@ export default function ProductListPage() {
 		pageSize: 10,
 		currentPage: 1,
 	});
-	const [isEdit, setIsEdit] = useState(false);
-	const [isShow, setIsShow] = useState(false);
+	const [dataDetail, setDataDetail] = useState({});
 
 	const getListProduct = async () => {
 		const response = await productService.getList({
@@ -74,8 +76,18 @@ export default function ProductListPage() {
 		setIsEdit(false);
 	};
 
+	const handleClickRow = (data) => {
+		setDataDetail(data);
+		setIsShowDetail(true);
+	};
+
+	const closeDrawer = () => {
+		setDataDetail({});
+		setIsShowDetail(false);
+	};
+
 	return (
-		<>
+		<div>
 			<div className="btn-primary">
 				<Button
 					size="middle"
@@ -91,6 +103,13 @@ export default function ProductListPage() {
 				pagination={{ pageSize: pagination.pageSize, total: total, showSizeChanger: true }}
 				scroll={{ y: 700 }}
 				onChange={handleTableChange}
+				onRow={(record, rowIndex) => {
+					return {
+						onClick: (event) => {
+							handleClickRow(record);
+						},
+					};
+				}}
 			/>
 			<ModalProduct
 				isEdit={isEdit}
@@ -99,6 +118,13 @@ export default function ProductListPage() {
 			>
 				<FormProduct></FormProduct>
 			</ModalProduct>
-		</>
+			{isShowDetail && (
+				<DetailProduct
+					isShow={isShowDetail}
+					onClose={() => closeDrawer()}
+					data={dataDetail}
+				></DetailProduct>
+			)}
+		</div>
 	);
 }
